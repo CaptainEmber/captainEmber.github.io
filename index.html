@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REM Ember</title>
+  <title>Emmett's Cool Webzone</title>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
   <!-- <script src="/easyrtc/easyrtc.js"></script> -->
@@ -24,8 +24,9 @@
   <a-scene reflection="directionalLight:a-light#dirlight;">
     <!-- all the assets -->
     <a-assets>
-      <a-asset-item id="env-glb" src="mdl/start_004.glb"></a-asset-item>
+      <a-asset-item id="env-glb" src="mdl/start_005.glb"></a-asset-item>
       <a-asset-item id="dolphin" src="mdl/dolphinleap.glb"></a-asset-item>
+      <a-asset-item id="david" src="mdl/david.glb"></a-asset-item>
       <img id="sky" src="img/clouds.jpg">
       <a-cubemap id="pan">
         <img src="img/panorama/px.jpg">
@@ -47,6 +48,7 @@
     
     <!-- Environment GLB: start.glb -->
     <a-entity gltf-model="#env-glb" position="0 0 0" scale="1 1 1"></a-entity>
+    <a-entity gltf-model="#david" position="0 0 0" scale="1 1 1"></a-entity>
     <a-entity gltf-model="#dolphin" material="envMap: #pan; metalness: 1; roughness: 0" position="0 0 0" scale="1 1 1" animation-mixer="clip: leap" scale-on-mouseenter></a-entity>
     <a-sphere position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
     <!-- Sky -->
