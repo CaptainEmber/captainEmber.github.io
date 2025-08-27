@@ -17,6 +17,13 @@
     window.location.replace('https://' + window.location.hostname + window.location.pathname + window.location.search + window.location.hash);
   }
   </script>
+
+  <!-- Force HTTPS -->
+  <script>
+  if (window.location.protocol !== 'https:') {
+    window.location.replace('https://' + window.location.hostname + window.location.pathname + window.location.search + window.location.hash);
+  }
+  </script>
 </head>
 <body>
 
@@ -44,6 +51,10 @@
       <a-entity camera look-controls wasd-controls>
         <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
       </a-entity>
+    <a-entity id="cameraRig" position="0 1.6 4" dynamic-body>
+      <a-entity camera look-controls wasd-controls>
+        <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
+      </a-entity>
     </a-entity>
     
     <!-- Environment GLB: start.glb -->
@@ -59,6 +70,14 @@
     <!-- Avatar Template with Goofy Shape and Positional Audio -->
     <template id="avatar-template">
       <a-entity>
+        <a-sphere id="head" radius="0.25"></a-sphere>
+        <a-sphere id="nose" radius="0.08" position="0 0.1 0.23" color="#fff"></a-sphere>
+        <a-sphere id="left-eye" radius="0.05" position="-0.08 0.18 0.22" color="#fff"></a-sphere>
+        <a-sphere id="right-eye" radius="0.05" position="0.08 0.18 0.22" color="#fff"></a-sphere>
+        <a-sphere id="left-pupil" radius="0.02" position="-0.08 0.18 0.27" color="#222"></a-sphere>
+        <a-sphere id="right-pupil" radius="0.02" position="0.08 0.18 0.27" color="#222"></a-sphere>
+        <a-entity id="mouth" geometry="primitive: torus; radius: 0.08; tube: 0.015; arc: 180" rotation="90 0 0" position="0 0.05 0.23" material="color: #f33"></a-entity>
+        <!-- <a-entity id="audio" networked-audio-source position="0 0.25 0"></a-entity> -->
         <a-sphere id="head" radius="0.25"></a-sphere>
         <a-sphere id="nose" radius="0.08" position="0 0.1 0.23" color="#fff"></a-sphere>
         <a-sphere id="left-eye" radius="0.05" position="-0.08 0.18 0.22" color="#fff"></a-sphere>
