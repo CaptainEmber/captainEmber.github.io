@@ -21,9 +21,16 @@
   <a-scene reflection="directionalLight:a-light#dirlight;">
     <!-- all the assets -->
     <a-assets>
-      <a-asset-item id="env-glb" src="mdl/start_008.glb"></a-asset-item>
-      <a-asset-item id="dolphin" src="mdl/dolphinleap.glb"></a-asset-item>
-      <a-asset-item id="david" src="mdl/david_02.glb"></a-asset-item>
+      <a-asset-item id="env" src="mdl/start_009.glb"></a-asset-item>
+      <a-asset-item id="dolphin" src="mdl/dolphin_02.glb"></a-asset-item>
+      <a-asset-item id="david" src="mdl/david_03.glb"></a-asset-item>
+      <!-- Cool collabs -->
+      <a-asset-item id="flynnRyan" src="mdl/flynnryan-showcase-glitch-me.glb"></a-asset-item>
+      <a-asset-item id="shiftingAtlas" src="mdl/shiftingatlas-glitch-me.glb"></a-asset-item>
+      <a-asset-item id="johnLoren" src="mdl/johnloren-gandalf-glitch-me.glb"></a-asset-item>
+      <a-asset-item id="briarWolf" src="mdl/spezsnek-glitch-me.glb"></a-asset-item>
+      <a-asset-item id="keroArt" src="mdl/keroart-flu-glitch-me.glb"></a-asset-item>
+      <a-asset-item id="walkerT" src="mdl/walkert-glitch-me.glb"></a-asset-item>
       <img id="sky" src="img/clouds.jpg">
       <a-cubemap id="pan">
         <img src="img/panorama/px.jpg">
@@ -47,14 +54,14 @@
     </a-assets>
 
     <!-- Camera and controls -->
-    <a-entity id="cameraRig" position="0 1.6 4" wasd-controls>
-      <a-entity camera look-controls>
+    <a-entity id="cameraRig">
+      <a-entity camera  position="0 1.6 4" look-controls wasd-controls>
         <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
       </a-entity>
     </a-entity>
 
     <!-- Environment & Models -->
-    <a-entity gltf-model="#env-glb"></a-entity>
+    <a-entity gltf-model="#env"></a-entity>
     <a-entity gltf-model="#david"></a-entity>
     <a-entity gltf-model="#dolphin" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" scale-on-mouseenter></a-entity>
     <a-sphere position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
@@ -73,10 +80,10 @@
     <!-- Simple UI controls for the playlist -->
     <a-entity id="playlist-controls">
         <a-box class="clickable" playlist-control="action: toggle" position="-4 1.5 -3" color="#3f51b5" rotation="0 45 0">
-            <a-text value="Play/Pause" align="center" position="0 0.6 0"></a-text>
+            <a-text value="Play/Pause" position="0 0.6 0"></a-text>
         </a-box>
         <a-box class="clickable" playlist-control="action: next" position="-4 1.5 -4" color="#ff5722" rotation="0 45 0">
-            <a-text value="Next Track" align="center" position="0 0.6 0"></a-text>
+            <a-text value="Next Track" position="0 0.6 0"></a-text>
         </a-box>
     </a-entity>
 
