@@ -64,10 +64,11 @@
 
     <!-- Environment & Models -->
     <a-entity id="floor" gltf-model="#env"></a-entity>
-    <a-entity id="mickeyD" gltf-model="#david"></a-entity>
-    <a-entity id="mickeyD" gltf-model="#palm"></a-entity>
-    <a-entity id="mickeyD" gltf-model="#mac"></a-entity>
     <a-entity id="dolphan" gltf-model="#dolphin" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap"></a-entity>
+    <a-entity id="mickeyD" gltf-model="#david"></a-entity>
+    <a-entity id="palm" gltf-model="#palm"></a-entity>
+    <a-entity id="mac" gltf-model="#mac"></a-entity>
+   
     <a-sphere id="orb" position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
     
     <!-- Sky & Lighting -->
@@ -78,7 +79,7 @@
     <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
     <a-entity id="jukebox" 
               position="-3 1 -3"
-              sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
+              sound="autoplay: false; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
               playlist="srcs: #song0, #song1, #song2, #song4, #song5, #song6, #song7, #song8; loop: true;"></a-entity>
 
     <!-- Simple UI controls for the playlist -->
