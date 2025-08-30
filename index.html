@@ -26,13 +26,6 @@
       <a-asset-item id="david" src="mdl/david_04.glb"></a-asset-item>
       <a-asset-item id="palm" src="mdl/palms_01.glb"></a-asset-item>
       <a-asset-item id="mac" src="mdl/macClassic_01.glb"></a-asset-item>
-      <!-- Cool collabs -->
-      <!-- <a-asset-item id="flynnRyan" src="mdl/flynnryan-showcase-glitch-me.glb"></a-asset-item>
-      <a-asset-item id="shiftingAtlas" src="mdl/shiftingatlas-glitch-me.glb"></a-asset-item>
-      <a-asset-item id="johnLoren" src="mdl/johnloren-gandalf-glitch-me.glb"></a-asset-item>
-      <a-asset-item id="briarWolf" src="mdl/spezsnek-glitch-me.glb"></a-asset-item>
-      <a-asset-item id="keroArt" src="mdl/keroart-flu-glitch-me.glb"></a-asset-item>
-      <a-asset-item id="walkerT" src="mdl/walkert-glitch-me.glb"></a-asset-item> -->
       <img id="sky" src="img/clouds.jpg">
       <a-cubemap id="pan">
         <img src="img/panorama/px.jpg">
@@ -42,7 +35,7 @@
         <img src="img/panorama/pz.jpg">
         <img src="img/panorama/nz.jpg">
       </a-cubemap>
-
+      <img src="img/winamp.png">
       <!-- Playlist Songs: Your updated playlist -->
       <audio id="song0" src="sfx/winamp.mp3" preload="auto"></audio>
       <audio id="song1" src="sfx/Engelwood - Crust FM - 01 A New Feeling (feat. Flamingosis).mp3" preload="auto"></audio>
@@ -68,8 +61,8 @@
     <a-entity id="mickeyD" gltf-model="#david"></a-entity>
     <a-entity id="palm" gltf-model="#palm"></a-entity>
     <a-entity id="mac" gltf-model="#mac"></a-entity>
-   
     <a-sphere id="orb" position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
+    <a-entity position="0 2.25 -15" particle-system="color: #EF0000,#44CC00"></a-entity>
     
     <!-- Sky & Lighting -->
     <a-sky src="#sky"></a-sky>
@@ -79,9 +72,9 @@
     <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
     <a-entity id="jukebox" 
               position="-3 1 -3"
-              sound="autoplay: false; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
-              playlist="srcs: #song0, #song1, #song2, #song4, #song5, #song6, #song7, #song8; loop: true;"></a-entity>
-
+              sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
+              playlist="srcs: #song0, #song1, #song2, #song4, #song5, #song6, #song7, #song8; loop: true;">
+    </a-entity>
     <!-- Simple UI controls for the playlist -->
     <a-entity id="playlist-controls">
         <a-box class="clickable" playlist-control="action: toggle" position="-4 1.5 -3" color="#3f51b5" rotation="0 45 0">
