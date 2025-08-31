@@ -35,12 +35,13 @@
         <img src="img/panorama/pz.jpg">
         <img src="img/panorama/nz.jpg">
       </a-cubemap>
-      <img src="img/winamp.png">
+      <img id="winamp" src="img/winamp.png">
+      <img id="winampPlay" src="img/winamp_play.png">
+      <img id="winampSkip" src="img/winamp_skip.png">
       <!-- Playlist Songs: Your updated playlist -->
       <audio id="song0" src="sfx/winamp.mp3" preload="auto"></audio>
       <audio id="song1" src="sfx/Engelwood - Crust FM - 01 A New Feeling (feat. Flamingosis).mp3" preload="auto"></audio>
       <audio id="song2" src="sfx/Engelwood - Crust FM - 02 Sand in the Potato Salad.mp3" preload="auto"></audio>
-      <audio id="song4" src="sfx/Engelwood - Crust FM - 04 Back to the Basics (feat. Jason Rich & Yung Gravy).mp3" preload="auto"></audio>
       <audio id="song5" src="sfx/Engelwood - Crust FM - 05 Crystal Dolphin.mp3" preload="auto"></audio>
       <audio id="song6" src="sfx/Engelwood - Crust FM - 06 Water Level.mp3" preload="auto"></audio>
       <audio id="song7" src="sfx/Engelwood - Crust FM - 07 Reef.mp3" preload="auto"></audio>
@@ -73,16 +74,14 @@
     <a-entity id="jukebox" 
               position="-3 1 -3"
               sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
-              playlist="srcs: #song0, #song1, #song2, #song4, #song5, #song6, #song7, #song8; loop: true;">
+              playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8; loop: true;">
     </a-entity>
     <!-- Simple UI controls for the playlist -->
-    <a-entity id="playlist-controls">
-        <a-box class="clickable" playlist-control="action: toggle" position="-4 1.5 -3" color="#3f51b5" rotation="0 45 0">
-            <a-text value="Play/Pause" position="0 0.6 0"></a-text>
-        </a-box>
-        <a-box class="clickable" playlist-control="action: next" position="-4 1.5 -4" color="#ff5722" rotation="0 45 0">
-            <a-text value="Next Track" position="0 0.6 0"></a-text>
-        </a-box>
+    <a-entity>
+      <a-entity id="playlist-controls" position="-4 1.5 -3">
+          <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" rotation="0 0 0"></a-plane>
+          <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" rotation="0 0 0"></a-plane>
+      </a-entity>
     </a-entity>
 
     <!-- Avatar Template -->
