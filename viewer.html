@@ -3,17 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emmett's 3D Model Viewer</title>
-  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/randomcolor/randomColor.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+  <title>Emmett's 3D Model Gallery</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: #0F0F0F;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0F0F0F 0%, #1a1a1a 100%);
+      color: white;
+      overflow: hidden;
     }
-    
+
+    /* This keeps child nodes hidden while the element loads */
+    :not(:defined) > * {
+      display: none;
+    }
+
+    model-viewer {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #0F0F0F 0%, #1a1a1a 100%);
+      --poster-color: transparent;
+    }
+
     .ui-overlay {
       position: fixed;
       top: 20px;
@@ -21,7 +33,7 @@
       transform: translateX(-50%);
       z-index: 1000;
       background: rgba(15, 15, 15, 0.9);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 15px;
       padding: 15px 25px;
@@ -31,7 +43,7 @@
       gap: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
-    
+
     .nav-button {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border: none;
@@ -47,28 +59,24 @@
       gap: 8px;
       box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
-    
+
     .nav-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
-    
-    .nav-button:active {
-      transform: translateY(0);
-    }
-    
+
     .nav-button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
       box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
     }
-    
+
     .model-info {
       text-align: center;
       flex-grow: 1;
     }
-    
+
     .model-title {
       font-size: 16px;
       font-weight: 600;
@@ -78,53 +86,22 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    
+
     .model-counter {
       font-size: 12px;
       opacity: 0.7;
       margin: 2px 0 0 0;
     }
-    
-    .loading-indicator {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2000;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 30px;
-      color: white;
-      text-align: center;
-      display: none;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 15px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid #667eea;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
+
     .home-button {
       position: fixed;
-      bottom: 20px;
+      top: 20px;
       left: 20px;
       z-index: 1000;
       background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
       border: none;
       border-radius: 50px;
-      padding: 15px 20px;
+      padding: 12px 18px;
       color: white;
       cursor: pointer;
       font-size: 14px;
@@ -136,20 +113,220 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .home-button:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    }
+
+    .info-panel {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      color: white;
+      max-width: 320px;
+      min-width: 280px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transform: translateX(360px);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .info-panel.visible {
+      transform: translateX(0);
+    }
+
+    .info-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.3;
+    }
+
+    .project-notes {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.9;
+      margin: 0;
+      color: #e0e0e0;
+    }
+
+    .project-meta {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      opacity: 0.7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .project-tag {
+      background: rgba(102, 126, 234, 0.2);
+      color: #667eea;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .thumbnail-slider {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: rgba(15, 15, 15, 0.9);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .slides {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      max-width: 600px;
+    }
+
+    .slide {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      background-size: cover;
+      background-position: center;
+      background-color: #333;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .slide:hover::before {
+      background: rgba(102, 126, 234, 0.2);
+    }
+
+    .slide.selected {
+      border-color: #667eea;
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .slide.selected::before {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .loading-indicator {
+      position: fixed;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      z-index: 2000;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 30px;
+      color: white;
+      text-align: center;
+      display: none;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 15px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Hide default model-viewer UI elements */
+    model-viewer::part(default-progress-mask) {
+      display: none;
+    }
+
+    model-viewer::part(default-progress-bar) {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <a href="index.html" class="home-button">
+    <span>🏠</span> Back to Lobby
+  </a>
+
   <div class="ui-overlay">
     <button class="nav-button" id="prevBtn">
       <span>←</span> Previous
     </button>
     <div class="model-info">
-      <h3 class="model-title" id="modelTitle">Loading...</h3>
+      <h3 class="model-title" id="modelTitle">Flynn Ryan Showcase</h3>
       <p class="model-counter" id="modelCounter">1 / 6</p>
     </div>
     <button class="nav-button" id="nextBtn">
@@ -157,169 +334,171 @@
     </button>
   </div>
 
+  <button class="info-toggle" id="infoToggle" title="Toggle Project Info">
+    ℹ️
+  </button>
+
+  <div class="info-panel" id="infoPanel">
+    <h2 class="project-title" id="projectTitle">Flynn Ryan Showcase</h2>
+    <p class="project-notes" id="projectNotes">Loading project information...</p>
+    <div class="project-tags" id="projectTags"></div>
+    <div class="project-meta" id="projectMeta">
+      <span id="projectDate">2024</span>
+      <span id="projectType">3D Model</span>
+    </div>
+  </div>
+
+  <div class="thumbnail-slider">
+    <div class="slides" id="thumbnailSlides">
+      <!-- Thumbnails will be generated dynamically -->
+    </div>
+  </div>
+
   <div class="loading-indicator" id="loadingIndicator">
     <div class="spinner"></div>
     <p>Loading 3D Model...</p>
   </div>
 
-  <a href="index.html" class="home-button">
-    <span>🏠</span> Back to Lobby
-  </a>
+  <model-viewer 
+    id="modelViewer"
+    camera-controls 
+    touch-action="pan-y" 
+    auto-rotate
+    auto-rotate-delay="3000"
+    rotation-per-second="30deg"
+    shadow-intensity="1"
+    environment-image="neutral"
+    exposure="1"
+    alt="3D model viewer">
+  </model-viewer>
 
-  <a-scene background="color: #0F0F0F" renderer="antialias: true; colorManagement: true; sortObjects: true">
-    <a-assets>
-      <!-- Assets will be loaded dynamically -->
-    </a-assets>
-
-    <!-- Camera with smooth controls -->
-    <a-entity id="cameraRig" position="0 2 5">
-      <a-entity 
-        camera 
-        look-controls="pointerLockEnabled: false" 
-        wasd-controls="acceleration: 20"
-        mouse-cursor="">
-      </a-entity>
-    </a-entity>
-    
-    <!-- Model display area -->
-    <a-entity id="modelContainer" position="0 0 0"></a-entity>
-    
-    <!-- Enhanced lighting setup -->
-    <a-light 
-      type="directional" 
-      position="2 4 2" 
-      light="castShadow: true; shadowMapWidth: 2048; shadowMapHeight: 2048; intensity: 1.2"
-      shadow="type: pcf">
-    </a-light>
-    <a-light type="ambient" intensity="0.4" color="#404040"></a-light>
-    <a-light type="point" position="-2 2 2" intensity="0.8" color="#667eea"></a-light>
-    
-    <!-- Subtle ground plane for shadows -->
-    <a-plane 
-      position="0 -1 0" 
-      rotation="-90 0 0" 
-      width="20" 
-      height="20" 
-      color="#1a1a1a" 
-      shadow="receive: true"
-      material="roughness: 0.8">
-    </a-plane>
-  </a-scene>
-
-  <script>
-    // Model configuration - update these paths to match your models
+  <script type="module">
+    // Model configuration
     const models = [
       {
         id: 'flynnRyan',
         src: 'mdl/flynnryan-showcase-glitch-me.glb',
+        poster: 'img/flynnryan-thumb.jpg', // Add thumbnail images if you have them
         title: 'Flynn Ryan Showcase',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'A detailed character showcase demonstrating advanced modeling and texturing techniques. Features intricate clothing details, realistic proportions, and high-quality materials.',
+        tags: ['Character', 'Showcase', 'High-Poly'],
+        date: '2024',
+        type: 'Character Model'
       },
       {
         id: 'shiftingAtlas',
         src: 'mdl/shiftingatlas-glitch-me.glb',
+        poster: 'img/shiftingatlas-thumb.jpg',
         title: 'Shifting Atlas',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'An abstract interpretation of geographical transformation through time. This piece explores the concept of changing landscapes and shifting perspectives in 3D space.',
+        tags: ['Abstract', 'Conceptual', 'Environment'],
+        date: '2024',
+        type: 'Conceptual Art'
       },
       {
         id: 'johnLoren',
         src: 'mdl/johnloren-gandalf-glitch-me.glb',
+        poster: 'img/johnloren-thumb.jpg',
         title: 'John Loren - Gandalf',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'A tribute to the iconic wizard from Middle-earth. This model captures the essence of wisdom and power through detailed sculpting and atmospheric lighting effects.',
+        tags: ['Fantasy', 'Character', 'Fan Art'],
+        date: '2024',
+        type: 'Character Model'
       },
       {
         id: 'briarWolf',
         src: 'mdl/spezsnek-glitch-me.glb',
+        poster: 'img/brierwolf-thumb.jpg',
         title: 'Briar Wolf',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'A mystical creature design blending organic and supernatural elements. Features dynamic poses and intricate detailing that brings this fantasy beast to life.',
+        tags: ['Creature', 'Fantasy', 'Original'],
+        date: '2024',
+        type: 'Creature Design'
       },
       {
         id: 'keroArt',
         src: 'mdl/keroart-flu-glitch-me.glb',
+        poster: 'img/keroart-thumb.jpg',
         title: 'Kero Art - Flu',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'An artistic exploration of illness and recovery through visual metaphor. The piece uses color, form, and texture to convey emotional and physical states.',
+        tags: ['Conceptual', 'Medical', 'Art'],
+        date: '2024',
+        type: 'Conceptual Art'
       },
       {
         id: 'walkerT',
         src: 'mdl/walkert-glitch-me.glb',
+        poster: 'img/walkert-thumb.jpg',
         title: 'Walker T',
-        scale: '1 1 1',
-        position: '0 0 0'
+        notes: 'A mechanical design study focusing on movement and functionality. This model showcases technical precision in both form and potential function.',
+        tags: ['Mechanical', 'Technical', 'Design'],
+        date: '2024',
+        type: 'Technical Model'
       }
     ];
 
     let currentModelIndex = 0;
-    let isLoading = false;
-    let currentModelEntity = null;
-    let currentAssetItem = null;
+    let infoPanelVisible = false;
 
     // Get DOM elements
+    const modelViewer = document.getElementById('modelViewer');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const modelTitle = document.getElementById('modelTitle');
     const modelCounter = document.getElementById('modelCounter');
+    const infoToggle = document.getElementById('infoToggle');
+    const infoPanel = document.getElementById('infoPanel');
+    const projectTitle = document.getElementById('projectTitle');
+    const projectNotes = document.getElementById('projectNotes');
+    const projectTags = document.getElementById('projectTags');
+    const projectDate = document.getElementById('projectDate');
+    const projectType = document.getElementById('projectType');
+    const thumbnailSlides = document.getElementById('thumbnailSlides');
     const loadingIndicator = document.getElementById('loadingIndicator');
-    const modelContainer = document.getElementById('modelContainer');
-    const assets = document.querySelector('a-assets');
 
-    // Wait for A-Frame to be ready
-    document.addEventListener('DOMContentLoaded', function() {
-      const scene = document.querySelector('a-scene');
-      scene.addEventListener('loaded', function() {
-        loadModel(currentModelIndex);
+    // Initialize thumbnails
+    function createThumbnails() {
+      models.forEach((model, index) => {
+        const slide = document.createElement('button');
+        slide.className = 'slide';
+        slide.style.backgroundImage = model.poster ? `url('${model.poster}')` : 'linear-gradient(135deg, #333 0%, #555 100%)';
+        slide.title = model.title;
+        slide.addEventListener('click', () => switchToModel(index));
+        
+        if (index === currentModelIndex) {
+          slide.classList.add('selected');
+        }
+        
+        thumbnailSlides.appendChild(slide);
       });
-    });
-
-    // Navigation event listeners
-    prevBtn.addEventListener('click', () => {
-      if (!isLoading && currentModelIndex > 0) {
-        loadModel(currentModelIndex - 1);
-      }
-    });
-
-    nextBtn.addEventListener('click', () => {
-      if (!isLoading && currentModelIndex < models.length - 1) {
-        loadModel(currentModelIndex + 1);
-      }
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (isLoading) return;
-      
-      if (e.key === 'ArrowLeft' && currentModelIndex > 0) {
-        loadModel(currentModelIndex - 1);
-      } else if (e.key === 'ArrowRight' && currentModelIndex < models.length - 1) {
-        loadModel(currentModelIndex + 1);
-      }
-    });
-
-    function showLoading() {
-      isLoading = true;
-      loadingIndicator.style.display = 'block';
-      updateButtons();
     }
 
-    function hideLoading() {
-      isLoading = false;
-      loadingIndicator.style.display = 'none';
-      updateButtons();
-    }
+    // Switch to a specific model
+    function switchToModel(index) {
+      if (index < 0 || index >= models.length) return;
 
-    function updateButtons() {
-      prevBtn.disabled = currentModelIndex === 0;
-      nextBtn.disabled = currentModelIndex === models.length - 1;
-    }
-
-    function updateUI(index) {
+      showLoading();
+      currentModelIndex = index;
       const model = models[index];
+
+      // Update model viewer
+      modelViewer.src = model.src;
+      if (model.poster) {
+        modelViewer.poster = model.poster;
+      }
+
+      // Update UI
+      updateUI();
+      updateThumbnails();
+    }
+
+    // Update UI elements
+    function updateUI() {
+      const model = models[currentModelIndex];
+      
+      // Update header
       modelTitle.textContent = model.title;
-      modelCounter.textContent = `${index + 1} / ${models.length}`;
+      modelCounter.textContent = `${currentModelIndex + 1} / ${models.length}`;
       
       // Update info panel
       projectTitle.textContent = model.title;
@@ -338,79 +517,80 @@
         });
       }
       
-      updateButtons();
+      // Update buttons
+      prevBtn.disabled = currentModelIndex === 0;
+      nextBtn.disabled = currentModelIndex === models.length - 1;
     }
 
-    function cleanupCurrentModel() {
-      // Remove current model entity
-      if (currentModelEntity) {
-        modelContainer.removeChild(currentModelEntity);
-        currentModelEntity = null;
+    // Update thumbnail selection
+    function updateThumbnails() {
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('selected', index === currentModelIndex);
+      });
+    }
+
+    // Show loading spinner
+    function showLoading() {
+      loadingIndicator.style.display = 'block';
+    }
+
+    // Hide loading spinner
+    function hideLoading() {
+      loadingIndicator.style.display = 'none';
+    }
+
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+      if (currentModelIndex > 0) {
+        switchToModel(currentModelIndex - 1);
       }
-    }
+    });
 
-    function loadModel(index) {
-      if (isLoading || index < 0 || index >= models.length) return;
+    nextBtn.addEventListener('click', () => {
+      if (currentModelIndex < models.length - 1) {
+        switchToModel(currentModelIndex + 1);
+      }
+    });
 
-      showLoading();
-      const model = models[index];
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentModelIndex > 0) {
+        switchToModel(currentModelIndex - 1);
+      } else if (e.key === 'ArrowRight' && currentModelIndex < models.length - 1) {
+        switchToModel(currentModelIndex + 1);
+      }
+    });
 
-      // Clean up previous model
-      cleanupCurrentModel();
+    // Info panel toggle
+    infoToggle.addEventListener('click', () => {
+      infoPanelVisible = !infoPanelVisible;
+      if (infoPanelVisible) {
+        infoPanel.classList.add('visible');
+        infoToggle.textContent = '✕';
+        infoToggle.title = 'Close Project Info';
+      } else {
+        infoPanel.classList.remove('visible');
+        infoToggle.textContent = 'ℹ️';
+        infoToggle.title = 'Toggle Project Info';
+      }
+    });
 
-      // Create new asset item
-      currentAssetItem = document.createElement('a-asset-item');
-      currentAssetItem.setAttribute('id', model.id);
-      currentAssetItem.setAttribute('src', model.src);
-      assets.appendChild(currentAssetItem);
+    // Model viewer event listeners
+    modelViewer.addEventListener('load', () => {
+      hideLoading();
+    });
 
-      // Wait for asset to load
-      currentAssetItem.addEventListener('loaded', () => {
-        // Create new model entity
-        currentModelEntity = document.createElement('a-entity');
-        currentModelEntity.setAttribute('gltf-model', `#${model.id}`);
-        currentModelEntity.setAttribute('scale', model.scale);
-        currentModelEntity.setAttribute('position', model.position);
-        currentModelEntity.setAttribute('shadow', 'cast: true; receive: true');
-        
-        // Add smooth rotation animation
-        currentModelEntity.setAttribute('animation', {
-          property: 'rotation',
-          to: '0 360 0',
-          loop: true,
-          dur: 20000,
-          easing: 'linear'
-        });
+    modelViewer.addEventListener('error', () => {
+      hideLoading();
+      console.error('Failed to load model');
+    });
 
-        // Add hover scaling effect
-        currentModelEntity.setAttribute('animation__mouseenter', {
-          property: 'scale',
-          to: '1.1 1.1 1.1',
-          startEvents: 'mouseenter',
-          dur: 300
-        });
-        
-        currentModelEntity.setAttribute('animation__mouseleave', {
-          property: 'scale',
-          to: model.scale,
-          startEvents: 'mouseleave',
-          dur: 300
-        });
-
-        modelContainer.appendChild(currentModelEntity);
-        
-        currentModelIndex = index;
-        updateUI(index);
-        hideLoading();
-      });
-
-      // Handle loading errors
-      currentAssetItem.addEventListener('error', () => {
-        console.error(`Failed to load model: ${model.src}`);
-        hideLoading();
-        // You could show an error message here
-      });
-    }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createThumbnails();
+      switchToModel(0);
+    });
   </script>
 </body>
 </html>
