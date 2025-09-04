@@ -52,26 +52,27 @@
         </div>
     </model-viewer>
 
-    <script type="module">
-        const modelViewer = document.querySelector("model-viewer");
+<script type="module">
+    const modelViewer = document.querySelector("model-viewer");
 
-        window.switchSrc = (element, name) => {
-            const base = "mdl/viewer/" + name;
-            modelViewer.src = base + '.glb';
-            modelViewer.poster = base + '.jpg'; // or .webp if you prefer
-            
-            const slides = document.querySelectorAll(".slide");
-            slides.forEach((element) => {
-                element.classList.remove("selected");
-            });
-            element.classList.add("selected");
-        };
+    window.switchSrc = (element, name) => {
+        const modelPath = "mdl/viewer/" + name;
+        const imagePath = "img/viewer/" + name;
 
-        document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
-            // Keep slider interactions from affecting the XR scene.
-            ev.preventDefault();
+        modelViewer.src = modelPath + '.glb';
+        modelViewer.poster = imagePath + '.jpg';
+        
+        const slides = document.querySelectorAll(".slide");
+        slides.forEach((slide) => {
+            slide.classList.remove("selected");
         });
-    </script>
+        element.classList.add("selected");
+    };
+
+    document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
+        ev.preventDefault();
+    });
+</script>
 
     <style>
         /* This keeps child nodes hidden while the element loads */
