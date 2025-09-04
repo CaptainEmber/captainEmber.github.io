@@ -51,7 +51,7 @@
 
     <!-- Camera and controls -->
     <a-entity id="cameraRig">
-      <a-entity camera  position="0 1.6 4" look-controls wasd-controls>
+      <a-entity camera  position="0 1.6 4" look-controls wasd-controls touch-controls>
         <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
       </a-entity>
     </a-entity>
@@ -97,7 +97,8 @@
       </a-entity>
     </template>
 
-    <a-link class="clickable" href="gallery.html" position="-6 1 -10" rotation="0 90 0" title="gallery"></a-link>
+    <a-link id="gallerylink" class="clickable" href="gallery.html" position="-6 1 -10" rotation="0 90 0" title="gallery"></a-link>
+    <a-link id="viewerlink" class="clickable" href="viewer.html" position="-8 1 -10" rotation="0 90 0" title="gallery"></a-link>
 
   </a-scene>
 
