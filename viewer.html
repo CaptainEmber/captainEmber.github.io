@@ -312,8 +312,8 @@
     }
 
     function updateButtons() {
-      prevBtn.disabled = isLoading || currentModelIndex === 0;
-      nextBtn.disabled = isLoading || currentModelIndex === models.length - 1;
+      prevBtn.disabled = currentModelIndex === 0;
+      nextBtn.disabled = currentModelIndex === models.length - 1;
     }
 
     function updateUI(index) {
