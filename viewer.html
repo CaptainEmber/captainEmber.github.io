@@ -1,596 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emmett's 3D Model Gallery</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0F0F0F 0%, #1a1a1a 100%);
-      color: white;
-      overflow: hidden;
-    }
-
-    /* This keeps child nodes hidden while the element loads */
-    :not(:defined) > * {
-      display: none;
-    }
-
-    model-viewer {
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(135deg, #0F0F0F 0%, #1a1a1a 100%);
-      --poster-color: transparent;
-    }
-
-    .ui-overlay {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background: rgba(15, 15, 15, 0.9);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 15px 25px;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .nav-button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      border-radius: 10px;
-      padding: 12px 18px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .nav-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .nav-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
-    }
-
-    .model-info {
-      text-align: center;
-      flex-grow: 1;
-    }
-
-    .model-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .model-counter {
-      font-size: 12px;
-      opacity: 0.7;
-      margin: 2px 0 0 0;
-    }
-
-    .home-button {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1000;
-      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-      border: none;
-      border-radius: 50px;
-      padding: 12px 18px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .home-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-    }
-
-    .info-panel {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      color: white;
-      max-width: 320px;
-      min-width: 280px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      transform: translateX(360px);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .info-panel.visible {
-      transform: translateX(0);
-    }
-
-    .info-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1001;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      color: white;
-      cursor: pointer;
-      font-size: 18px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .info-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .project-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 10px 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.3;
-    }
-
-    .project-notes {
-      font-size: 14px;
-      line-height: 1.6;
-      opacity: 0.9;
-      margin: 0;
-      color: #e0e0e0;
-    }
-
-    .project-meta {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 12px;
-      opacity: 0.7;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .project-tags {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .project-tag {
-      background: rgba(102, 126, 234, 0.2);
-      color: #667eea;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 500;
-      border: 1px solid rgba(102, 126, 234, 0.3);
-    }
-
-    .thumbnail-slider {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background: rgba(15, 15, 15, 0.9);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .slides {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      max-width: 600px;
-    }
-
-    .slide {
-      scroll-snap-align: start;
-      flex-shrink: 0;
-      width: 80px;
-      height: 80px;
-      background-size: cover;
-      background-position: center;
-      background-color: #333;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .slide::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .slide:hover::before {
-      background: rgba(102, 126, 234, 0.2);
-    }
-
-    .slide.selected {
-      border-color: #667eea;
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .slide.selected::before {
-      background: rgba(102, 126, 234, 0.1);
-    }
-
-    .loading-indicator {
-      position: fixed;
-      bottom: 50%;
-      left: 50%;
-      transform: translate(-50%, 50%);
-      z-index: 2000;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 30px;
-      color: white;
-      text-align: center;
-      display: none;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 15px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid #667eea;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Hide default model-viewer UI elements */
-    model-viewer::part(default-progress-mask) {
-      display: none;
-    }
-
-    model-viewer::part(default-progress-bar) {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Collabs with 2D artists</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-  <a href="index.html" class="home-button">
-    <span>🏠</span> Back to Lobby
-  </a>
-
-  <div class="ui-overlay">
-    <button class="nav-button" id="prevBtn">
-      <span>←</span> Previous
-    </button>
-    <div class="model-info">
-      <h3 class="model-title" id="modelTitle">Flynn Ryan Showcase</h3>
-      <p class="model-counter" id="modelCounter">1 / 6</p>
-    </div>
-    <button class="nav-button" id="nextBtn">
-      Next <span>→</span>
-    </button>
-  </div>
-
-  <button class="info-toggle" id="infoToggle" title="Toggle Project Info">
-    ℹ️
-  </button>
-
-  <div class="info-panel" id="infoPanel">
-    <h2 class="project-title" id="projectTitle">Flynn Ryan Showcase</h2>
-    <p class="project-notes" id="projectNotes">Loading project information...</p>
-    <div class="project-tags" id="projectTags"></div>
-    <div class="project-meta" id="projectMeta">
-      <span id="projectDate">2024</span>
-      <span id="projectType">3D Model</span>
-    </div>
-  </div>
-
-  <div class="thumbnail-slider">
-    <div class="slides" id="thumbnailSlides">
-      <!-- Thumbnails will be generated dynamically -->
-    </div>
-  </div>
-
-  <div class="loading-indicator" id="loadingIndicator">
-    <div class="spinner"></div>
-    <p>Loading 3D Model...</p>
-  </div>
-
-  <model-viewer 
-    id="modelViewer"
-    camera-controls 
-    touch-action="pan-y" 
-    auto-rotate
-    auto-rotate-delay="3000"
-    rotation-per-second="30deg"
-    shadow-intensity="1"
-    environment-image="neutral"
-    exposure="1"
-    alt="3D model viewer">
-  </model-viewer>
-
-  <script type="module">
-    // Model configuration
-    const models = [
-      {
-        id: 'flynnRyan',
-        src: 'mdl/flynnryan-showcase-glitch-me.glb',
-        poster: 'img/flynnryan-thumb.jpg', // Add thumbnail images if you have them
-        title: 'Flynn Ryan Showcase',
-        notes: 'A detailed character showcase demonstrating advanced modeling and texturing techniques. Features intricate clothing details, realistic proportions, and high-quality materials.',
-        tags: ['Character', 'Showcase', 'High-Poly'],
-        date: '2024',
-        type: 'Character Model'
-      },
-      {
-        id: 'shiftingAtlas',
-        src: 'mdl/shiftingatlas-glitch-me.glb',
-        poster: 'img/shiftingatlas-thumb.jpg',
-        title: 'Shifting Atlas',
-        notes: 'An abstract interpretation of geographical transformation through time. This piece explores the concept of changing landscapes and shifting perspectives in 3D space.',
-        tags: ['Abstract', 'Conceptual', 'Environment'],
-        date: '2024',
-        type: 'Conceptual Art'
-      },
-      {
-        id: 'johnLoren',
-        src: 'mdl/johnloren-gandalf-glitch-me.glb',
-        poster: 'img/johnloren-thumb.jpg',
-        title: 'John Loren - Gandalf',
-        notes: 'A tribute to the iconic wizard from Middle-earth. This model captures the essence of wisdom and power through detailed sculpting and atmospheric lighting effects.',
-        tags: ['Fantasy', 'Character', 'Fan Art'],
-        date: '2024',
-        type: 'Character Model'
-      },
-      {
-        id: 'briarWolf',
-        src: 'mdl/spezsnek-glitch-me.glb',
-        poster: 'img/brierwolf-thumb.jpg',
-        title: 'Briar Wolf',
-        notes: 'A mystical creature design blending organic and supernatural elements. Features dynamic poses and intricate detailing that brings this fantasy beast to life.',
-        tags: ['Creature', 'Fantasy', 'Original'],
-        date: '2024',
-        type: 'Creature Design'
-      },
-      {
-        id: 'keroArt',
-        src: 'mdl/keroart-flu-glitch-me.glb',
-        poster: 'img/keroart-thumb.jpg',
-        title: 'Kero Art - Flu',
-        notes: 'An artistic exploration of illness and recovery through visual metaphor. The piece uses color, form, and texture to convey emotional and physical states.',
-        tags: ['Conceptual', 'Medical', 'Art'],
-        date: '2024',
-        type: 'Conceptual Art'
-      },
-      {
-        id: 'walkerT',
-        src: 'mdl/walkert-glitch-me.glb',
-        poster: 'img/walkert-thumb.jpg',
-        title: 'Walker T',
-        notes: 'A mechanical design study focusing on movement and functionality. This model showcases technical precision in both form and potential function.',
-        tags: ['Mechanical', 'Technical', 'Design'],
-        date: '2024',
-        type: 'Technical Model'
-      }
-    ];
-
-    let currentModelIndex = 0;
-    let infoPanelVisible = false;
-
-    // Get DOM elements
-    const modelViewer = document.getElementById('modelViewer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const modelTitle = document.getElementById('modelTitle');
-    const modelCounter = document.getElementById('modelCounter');
-    const infoToggle = document.getElementById('infoToggle');
-    const infoPanel = document.getElementById('infoPanel');
-    const projectTitle = document.getElementById('projectTitle');
-    const projectNotes = document.getElementById('projectNotes');
-    const projectTags = document.getElementById('projectTags');
-    const projectDate = document.getElementById('projectDate');
-    const projectType = document.getElementById('projectType');
-    const thumbnailSlides = document.getElementById('thumbnailSlides');
-    const loadingIndicator = document.getElementById('loadingIndicator');
-
-    // Initialize thumbnails
-    function createThumbnails() {
-      models.forEach((model, index) => {
-        const slide = document.createElement('button');
-        slide.className = 'slide';
-        slide.style.backgroundImage = model.poster ? `url('${model.poster}')` : 'linear-gradient(135deg, #333 0%, #555 100%)';
-        slide.title = model.title;
-        slide.addEventListener('click', () => switchToModel(index));
+    <model-viewer 
+        src="mdl/viewer/flynnryan.glb" 
+        poster="mdl/viewer/flynnryan.jpg" 
+        shadow-intensity="1" 
+        ar 
+        camera-controls 
+        touch-action="pan-y" 
+        alt="Custom 3D Models">
         
-        if (index === currentModelIndex) {
-          slide.classList.add('selected');
-        }
-        
-        thumbnailSlides.appendChild(slide);
-      });
-    }
+        <button slot="ar-button" id="ar-button">
+            View in your space
+        </button>
 
-    // Switch to a specific model
-    function switchToModel(index) {
-      if (index < 0 || index >= models.length) return;
+        <div id="ar-prompt">
+            <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+        </div>
 
-      showLoading();
-      currentModelIndex = index;
-      const model = models[index];
+        <button id="ar-failure">
+            AR is not tracking!
+        </button>
 
-      // Update model viewer
-      modelViewer.src = model.src;
-      if (model.poster) {
-        modelViewer.poster = model.poster;
-      }
+        <div class="slider">
+            <div class="slides">
+                <!-- Update these buttons with your actual model names -->
+                <button class="slide selected" onclick="switchSrc(this, 'flynnryan')" style="background-image: url('mdl/viewer/flynnryan.jpg');">
+                </button>
+                
+                <button class="slide" onclick="switchSrc(this, 'johnloren')" style="background-image: url('mdl/viewer/johnloren.jpg');">
+                </button>
+                
+                <button class="slide" onclick="switchSrc(this, 'keroart-flu')" style="background-image: url('mdl/viewer/keroart-flu.jpg');">
+                </button>
+                
+                <button class="slide" onclick="switchSrc(this, 'shiftingatlas')" style="background-image: url('mdl/viewer/shiftingatlas.jpg');">
+                </button>
+                
+                <button class="slide" onclick="switchSrc(this, 'spezsnek')" style="background-image: url('mdl/viewer/spezsnek.jpg');">
+                </button>
+                
+                <button class="slide" onclick="switchSrc(this, 'walkert')" style="background-image: url('mdl/viewer/walkert.jpg');">
+                </button>
+            </div>
+        </div>
+    </model-viewer>
 
-      // Update UI
-      updateUI();
-      updateThumbnails();
-    }
+    <script type="module">
+        const modelViewer = document.querySelector("model-viewer");
 
-    // Update UI elements
-    function updateUI() {
-      const model = models[currentModelIndex];
-      
-      // Update header
-      modelTitle.textContent = model.title;
-      modelCounter.textContent = `${currentModelIndex + 1} / ${models.length}`;
-      
-      // Update info panel
-      projectTitle.textContent = model.title;
-      projectNotes.textContent = model.notes;
-      projectDate.textContent = model.date;
-      projectType.textContent = model.type;
-      
-      // Update tags
-      projectTags.innerHTML = '';
-      if (model.tags && model.tags.length > 0) {
-        model.tags.forEach(tag => {
-          const tagElement = document.createElement('span');
-          tagElement.className = 'project-tag';
-          tagElement.textContent = tag;
-          projectTags.appendChild(tagElement);
+        window.switchSrc = (element, name) => {
+            const base = "mdl/viewer/" + name;
+            modelViewer.src = base + '.glb';
+            modelViewer.poster = base + '.jpg'; // or .webp if you prefer
+            
+            const slides = document.querySelectorAll(".slide");
+            slides.forEach((element) => {
+                element.classList.remove("selected");
+            });
+            element.classList.add("selected");
+        };
+
+        document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
+            // Keep slider interactions from affecting the XR scene.
+            ev.preventDefault();
         });
-      }
-      
-      // Update buttons
-      prevBtn.disabled = currentModelIndex === 0;
-      nextBtn.disabled = currentModelIndex === models.length - 1;
-    }
+    </script>
 
-    // Update thumbnail selection
-    function updateThumbnails() {
-      const slides = document.querySelectorAll('.slide');
-      slides.forEach((slide, index) => {
-        slide.classList.toggle('selected', index === currentModelIndex);
-      });
-    }
+    <style>
+        /* This keeps child nodes hidden while the element loads */
+        :not(:defined) > * {
+            display: none;
+        }
 
-    // Show loading spinner
-    function showLoading() {
-      loadingIndicator.style.display = 'block';
-    }
+        model-viewer {
+            width: 100%;
+            height: 500px;
+            background-color: #eee;
+            overflow-x: hidden;
+        }
 
-    // Hide loading spinner
-    function hideLoading() {
-      loadingIndicator.style.display = 'none';
-    }
+        #ar-button {
+            background-image: url(https://modelviewer.dev/shared-assets/icons/ic_view_in_ar_new_googblue_48dp.png);
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            background-position: 12px 50%;
+            background-color: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            bottom: 132px;
+            padding: 0px 16px 0px 40px;
+            font-family: Roboto Regular, Helvetica Neue, sans-serif;
+            font-size: 14px;
+            color: #4285f4;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 18px;
+            border: 1px solid #DADCE0;
+        }
 
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-      if (currentModelIndex > 0) {
-        switchToModel(currentModelIndex - 1);
-      }
-    });
+        #ar-button:active {
+            background-color: #E8EAED;
+        }
 
-    nextBtn.addEventListener('click', () => {
-      if (currentModelIndex < models.length - 1) {
-        switchToModel(currentModelIndex + 1);
-      }
-    });
+        #ar-button:focus {
+            outline: none;
+        }
 
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' && currentModelIndex > 0) {
-        switchToModel(currentModelIndex - 1);
-      } else if (e.key === 'ArrowRight' && currentModelIndex < models.length - 1) {
-        switchToModel(currentModelIndex + 1);
-      }
-    });
+        #ar-button:focus-visible {
+            outline: 1px solid #4285f4;
+        }
 
-    // Info panel toggle
-    infoToggle.addEventListener('click', () => {
-      infoPanelVisible = !infoPanelVisible;
-      if (infoPanelVisible) {
-        infoPanel.classList.add('visible');
-        infoToggle.textContent = '✕';
-        infoToggle.title = 'Close Project Info';
-      } else {
-        infoPanel.classList.remove('visible');
-        infoToggle.textContent = 'ℹ️';
-        infoToggle.title = 'Toggle Project Info';
-      }
-    });
+        @keyframes circle {
+            from { transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg); }
+            to   { transform: translateX(-50%) rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
 
-    // Model viewer event listeners
-    modelViewer.addEventListener('load', () => {
-      hideLoading();
-    });
+        @keyframes elongate {
+            from { transform: translateX(100px); }
+            to   { transform: translateX(-100px); }
+        }
 
-    modelViewer.addEventListener('error', () => {
-      hideLoading();
-      console.error('Failed to load model');
-    });
+        model-viewer > #ar-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 175px;
+            animation: elongate 2s infinite ease-in-out alternate;
+            display: none;
+        }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      createThumbnails();
-      switchToModel(0);
-    });
-  </script>
+        model-viewer[ar-status="session-started"] > #ar-prompt {
+            display: block;
+        }
+
+        model-viewer > #ar-prompt > img {
+            animation: circle 4s linear infinite;
+        }
+
+        model-viewer > #ar-failure {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 175px;
+            display: none;
+        }
+
+        model-viewer[ar-tracking="not-tracking"] > #ar-failure {
+            display: block;
+        }
+
+        .slider {
+            width: 100%;
+            text-align: center;
+            overflow: hidden;
+            position: absolute;
+            bottom: 16px;
+        }
+
+        .slides {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 10px;
+        }
+
+        .slide {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #fff;
+            margin-right: 10px;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            cursor: pointer;
+        }
+
+        .slide.selected {
+            border: 2px solid #4285f4;
+        }
+
+        .slide:focus {
+            outline: none;
+        }
+
+        .slide:focus-visible {
+            outline: 1px solid #4285f4;
+        }
+    </style>
 </body>
 </html>
