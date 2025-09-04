@@ -207,6 +207,7 @@
   </a-scene>
 
   <script>
+    // Model configuration - update these paths to match your models
     const models = [
       {
         id: 'flynnRyan',
@@ -345,12 +346,6 @@
       if (currentModelEntity) {
         modelContainer.removeChild(currentModelEntity);
         currentModelEntity = null;
-      }
-
-      // Remove asset from a-assets to free memory
-      if (currentAssetItem) {
-        assets.removeChild(currentAssetItem);
-        currentAssetItem = null;
       }
     }
 
