@@ -38,7 +38,7 @@
       <img id="winamp" src="img/winamp.png">
       <img id="winampPlay" src="img/winamp_play.png">
       <img id="winampSkip" src="img/winamp_skip.png">
-      <img id="starfield" src="img/starfield.gif">
+      <video id="starfield" src="vid/starfield.mp4" autoplay="true"></video>
       <!-- Playlist Songs: Your updated playlist -->
       <audio id="song0" src="sfx/winamp.mp3" preload="auto"></audio>
       <audio id="song1" src="sfx/Engelwood - Crust FM - 01 A New Feeling (feat. Flamingosis).mp3" preload="auto"></audio>
@@ -58,17 +58,18 @@
 
     <!-- Environment & Models -->
     <a-entity id="floor" gltf-model="#env"></a-entity>
-    <a-entity id="dolphan" gltf-model="#dolphin" animation-mixer="clip: leap"></a-entity>
+    <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -10"></a-entity>
     <a-entity id="mickeyD" gltf-model="#david"></a-entity>
     <a-entity id="palm" gltf-model="#palm"></a-entity>
     <a-entity id="mac" gltf-model="#mac"></a-entity>
     <a-sphere id="orb" position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
-    <a-plane id="screensaver" src="#screensaver" position="-5 -6 -15" rotation="90 0 0"></a-plane>
+    <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="src: #starfield"></a-plane>
     
     <!-- Sky & Lighting -->
     <a-sky src="#sky"></a-sky>
     <a-light id="dirlight" intensity="1" light="castShadow:true;type:directional" position="1 1 1"></a-light>
     <a-light type="probe" envMap="#pan"></a-light>
+    <a-entity light="type: ambient; color: #CCC"></a-entity>
     
     <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
     <a-entity id="jukebox" 
