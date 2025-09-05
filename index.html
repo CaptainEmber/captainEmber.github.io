@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/randomcolor/randomColor.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
   <link rel="stylesheet" href="style.css">
 
   <!-- Force HTTPS -->
@@ -72,17 +73,19 @@
     
     <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
     <a-entity id="jukebox" 
-              position="-3 1 -3"
+              position="-6 1.5 -3"
               sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
-              playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8; loop: true;">
-    </a-entity>
-    <!-- Simple UI controls for the playlist -->
-    <a-entity>
-      <a-entity id="playlist-controls" position="-6 1.5 -3" rotation="0 92.5894067353459 0" scale="2 2 2">
-          <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
-          <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" material="side: double" scale="1 0.73 1"scale-on-mouseenter></a-plane>
+              playlist="srcs: #song0, #song5, #song2, #song1, #song6, #song7, #song8; loop: true;">
+      <a-entity>
+        <a-entity id="playlist-controls" position="0 0 0" rotation="0 92.5894067353459 0" scale="2 2 2">
+            <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
+            <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
+        </a-entity>
       </a-entity>
     </a-entity>
+    
+    <!-- Particles?-->
+    <a-entity position="0 2.25 -15" particle-system="color: #000,#FFF"></a-entity>
 
     <!-- Avatar Template -->
     <template id="avatar-template">
@@ -202,17 +205,28 @@
         }
       });
 
-      AFRAME.registerComponent('scale-on-mouseenter', {
-        schema: {
-          to: {default: '1.2 1.2 1.2', type: 'vec3'}
-        },
-        init: function () {
-          var data = this.data;
-          var el = this.el;
-          this.el.addEventListener('mouseenter', function () {
-            el.object3D.scale.copy(data.to);
-          });
-        }
+      AFRAME.registerComponent('scale-on-hover', {
+      // Schema defines the properties of the component.
+      schema: {
+        factor: {type: 'number', default: 1.2}
+      },
+
+      init: function () {
+        // Store original and target scales.
+        this.originalScale = new THREE.Vector3().copy(this.el.object3D.scale);
+        this.targetScale = new THREE.Vector3().copy(this.originalScale).multiplyScalar(this.data.factor);
+        
+        // --- Event Listeners ---
+        
+        // Using arrow functions to preserve 'this' context.
+        this.el.addEventListener('mouseenter', () => {
+          this.el.object3D.scale.copy(this.targetScale);
+        });
+        
+        this.el.addEventListener('mouseleave', () => {
+          this.el.object3D.scale.copy(this.originalScale);
+        });
+      }
       });
     });
   </script>
