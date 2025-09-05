@@ -22,7 +22,7 @@
     <!-- all the assets -->
     <a-assets>
       <a-asset-item id="env" src="mdl/start_010.glb"></a-asset-item>
-      <a-asset-item id="dolphin" src="mdl/dolphin_02.glb"></a-asset-item>
+      <a-asset-item id="dolphin" src="mdl/dolphin_03.glb"></a-asset-item>
       <a-asset-item id="david" src="mdl/david_04.glb"></a-asset-item>
       <a-asset-item id="palm" src="mdl/palms_01.glb"></a-asset-item>
       <a-asset-item id="mac" src="mdl/macClassic_01.glb"></a-asset-item>
@@ -50,15 +50,15 @@
     </a-assets>
 
     <!-- Camera and controls -->
-    <a-entity id="cameraRig">
-      <a-entity camera  position="0 1.6 4" look-controls wasd-controls touch-controls>
+    <a-entity id="cameraRig" movement-controls="fly: true; speed: 0.2;" wasd-controls-enabled="true">
+      <a-entity camera  position="0 1.6 0" look-controls >
         <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
       </a-entity>
     </a-entity>
 
     <!-- Environment & Models -->
     <a-entity id="floor" gltf-model="#env"></a-entity>
-    <a-entity id="dolphan" gltf-model="#dolphin" material="shader: cubemap-reflection; envMap: #pan;" animation-mixer="clip: leap"></a-entity>
+    <a-entity id="dolphan" gltf-model="#dolphin" animation-mixer="clip: leap"></a-entity>
     <a-entity id="mickeyD" gltf-model="#david"></a-entity>
     <a-entity id="palm" gltf-model="#palm"></a-entity>
     <a-entity id="mac" gltf-model="#mac"></a-entity>
@@ -216,83 +216,6 @@
       });
     });
   </script>
-
-  <script>
-  AFRAME.registerShader('cubemap-reflection', {
-    // 1. SCHEM A: Define properties passed from the material component.
-    schema: {
-      // The cubemap texture. 'map' type tells A-Frame this is a texture.
-      envMap: {type: 'map', is: 'uniform'},
-    },
-
-    // We'll write both shaders, so raw: true is a good choice.
-    // This gives us full control without A-Frame injecting code.
-    raw: true,
-
-    // 2. VERTEX SHADER: Prepare data for the fragment shader.
-    // Its job is to calculate the world position of the vertex and its normal,
-    // then pass them to the fragment shader.
-    vertexShader: `
-      // Attributes sent by A-Frame/THREE.js
-      attribute vec3 position;
-      attribute vec3 normal;
-
-      // Uniforms sent by A-Frame/THREE.js
-      uniform mat4 modelMatrix;
-      uniform mat4 viewMatrix;
-      uniform mat4 projectionMatrix;
-      uniform mat3 normalMatrix;
-
-      // Data to pass to the fragment shader
-      varying vec3 vWorldPosition;
-      varying vec3 vNormal;
-
-      void main() {
-        // Calculate the vertex's position in world space.
-        vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
-        
-        // Orient the vertex's normal in world space.
-        vNormal = normalize(normalMatrix * normal);
-        
-        // Final position for rendering.
-        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-      }
-    `,
-
-    // 3. FRAGMENT SHADER: Calculate the final pixel color.
-    // This is where the reflection math happens.
-    fragmentShader: `
-      precision mediump float;
-
-      // Uniforms from schema and A-Frame/THREE.js
-      uniform samplerCube envMap; // Our cubemap
-      uniform vec3 cameraPosition;   // The camera's position in the world
-
-      // Data received from the vertex shader
-      varying vec3 vWorldPosition;
-      varying vec3 vNormal;
-
-      void main() {
-        // Normalize the world normal, as it's interpolated.
-        vec3 worldNormal = normalize(vNormal);
-
-        // Calculate the direction from the camera to the fragment.
-        vec3 viewDirection = normalize(vWorldPosition - cameraPosition);
-        
-        // Calculate the reflection vector using the built-in GLSL function.
-        // It reflects the view direction across the surface normal.
-        vec3 reflectionVector = reflect(viewDirection, worldNormal);
-
-        // Sample the cubemap with the reflection vector to get the color.
-        vec4 envColor = textureCube(envMap, reflectionVector);
-
-        // Set the final color of the pixel.
-        gl_FragColor = envColor;
-      }
-    `
-  });
-</script>
-
 </body>
 </html>
 
