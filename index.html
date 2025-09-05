@@ -38,6 +38,7 @@
       <img id="winamp" src="img/winamp.png">
       <img id="winampPlay" src="img/winamp_play.png">
       <img id="winampSkip" src="img/winamp_skip.png">
+      <img id="starfield" src="img/starfield.gif">
       <!-- Playlist Songs: Your updated playlist -->
       <audio id="song0" src="sfx/winamp.mp3" preload="auto"></audio>
       <audio id="song1" src="sfx/Engelwood - Crust FM - 01 A New Feeling (feat. Flamingosis).mp3" preload="auto"></audio>
@@ -46,7 +47,6 @@
       <audio id="song6" src="sfx/Engelwood - Crust FM - 06 Water Level.mp3" preload="auto"></audio>
       <audio id="song7" src="sfx/Engelwood - Crust FM - 07 Reef.mp3" preload="auto"></audio>
       <audio id="song8" src="sfx/Engelwood - Crust FM - 08 Always Thinking of You (Fear. Sophie Meiers).mp3" preload="auto"></audio>
-
     </a-assets>
 
     <!-- Camera and controls -->
@@ -63,6 +63,7 @@
     <a-entity id="palm" gltf-model="#palm"></a-entity>
     <a-entity id="mac" gltf-model="#mac"></a-entity>
     <a-sphere id="orb" position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
+    <a-plane id="screensaver" src="#screensaver" position="-5 -6 -15" rotation="90 0 0"></a-plane>
     
     <!-- Sky & Lighting -->
     <a-sky src="#sky"></a-sky>
@@ -96,7 +97,7 @@
     </template>
 
     <a-link id="viewerlink" class="clickable" href="viewer.html" position="-6 1 -12" rotation="0 90 0" title="AR Collab Gallery"></a-link>
-
+    
   </a-scene>
 
   <script>
