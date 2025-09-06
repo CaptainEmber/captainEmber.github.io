@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Emmett's Cool Webzone</title>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
@@ -39,7 +40,7 @@
       <img id="winamp" src="img/winamp.png">
       <img id="winampPlay" src="img/winamp_play.png">
       <img id="winampSkip" src="img/winamp_skip.png">
-      <video id="starfield" src="vid/starfield.mp4" autoplay="true"></video>
+      <video id="starfield" src="vid/starfield.mp4" autoplay="true" playsinline></video>
       <!-- Playlist Songs: Your updated playlist -->
       <audio id="song0" src="sfx/winamp.mp3" preload="auto"></audio>
       <audio id="song1" src="sfx/Engelwood - Crust FM - 01 A New Feeling (feat. Flamingosis).mp3" preload="auto"></audio>
@@ -65,7 +66,7 @@
     <a-entity id="mac" gltf-model="#mac"></a-entity>
     <a-entity id="EmmettBaber" gltf-model="mdl/EmmettBaberWordArt_02.glb" position="-1 5 -20" scale="2 2 2"></a-entity>
     <a-sphere id="orb" position="-26 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
-    <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield"></a-plane>
+    <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield" playsinline></a-plane>
     <a-plane id="winamp" src="#winamp"></a-plane>
 
     <!-- Sky & Lighting -->
