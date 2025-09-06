@@ -63,10 +63,11 @@
     <a-entity id="mickeyD" gltf-model="#david"></a-entity>
     <a-entity id="palm" gltf-model="#palm"></a-entity>
     <a-entity id="mac" gltf-model="#mac"></a-entity>
-    <a-entity id="EmmettBaber" gltf-model="#EB"></a-entity>
-    <a-sphere id="orb" position="-5 6 -25" material="envMap: #pan; metalness: 1; roughness: 0" scale="5 5 5"></a-sphere>
+    <a-entity id="EmmettBaber" gltf-model="mdl/EmmettBaberWordArt_02.glb" position="-1 5 -20" scale="2 2 2"></a-entity>
+    <a-sphere id="orb" position="-26 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
     <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield"></a-plane>
-    
+    <a-plane id="winamp" src="#winamp"></a-plane>
+
     <!-- Sky & Lighting -->
     <a-sky src="#sky"></a-sky>
     <a-light id="dirlight" intensity="1" light="castShadow:true;type:directional" position="1 1 1"></a-light>
@@ -78,6 +79,7 @@
               position="-6 1.5 -3"
               sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
               playlist="srcs: #song0, #song5, #song2, #song1, #song6, #song7, #song8; loop: true;">
+      <a-plane id="winamp" src="#winamp"></a-plane>
       <a-entity>
         <a-entity id="playlist-controls" position="0 0 0" rotation="0 92.5894067353459 0" scale="2 2 2">
             <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
