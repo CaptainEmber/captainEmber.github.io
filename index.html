@@ -61,25 +61,25 @@
     <!-- Environment & Models -->
     <a-entity id="scenewrapper" position="-2 0 0">
       <a-entity id="floor" gltf-model="#env"></a-entity>
-      <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -10"></a-entity>
+      <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -9"></a-entity>
       <a-entity id="mickeyD" gltf-model="#david"></a-entity>
       <a-entity id="palm" gltf-model="#palm"></a-entity>
       <a-entity id="mac" gltf-model="#mac"></a-entity>
       <a-entity id="EmmettBaber" gltf-model="#EB" position="-4 6 -15" scale="2 2 2"></a-entity>
-      <a-sphere id="orb" position="-26 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
+      <a-sphere id="orb" position="-20 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
       <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield" playsinline></a-plane>
-      <a-plane id="winamp" src="#winamp"></a-plane>
+
 
       <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
       <a-entity id="jukebox" 
                 position="-6 1.5 -3"
                 sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
                 playlist="srcs: #song0, #song5, #song2, #song1, #song6, #song7, #song8; loop: true;">
-        <a-plane id="winamp" src="#winamp"></a-plane>
+        <a-plane id="winamp" src="#winamp" position="0 0 -.10" rotation="0 90 0" scale="2 2.25 2"></a-plane>
         <a-entity>
-          <a-entity id="playlist-controls" position="0 0 0" rotation="0 92.5894067353459 0" scale="2 2 2">
-              <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
-              <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" material="side: double" scale="1 0.73 1" scale-on-mouseenter></a-plane>
+          <a-entity id="playlist-controls" position="0 0 0" rotation="0 92.5894067353459 0" scale="1 1 1">
+              <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1"></a-plane>
+              <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" material="side: double" scale="1 0.73 1"></a-plane>
           </a-entity>
         </a-entity>
       </a-entity>
@@ -208,29 +208,6 @@
         }
       });
 
-      AFRAME.registerComponent('scale-on-hover', {
-      // Schema defines the properties of the component.
-      schema: {
-        factor: {type: 'number', default: 1.2}
-      },
-
-      init: function () {
-        // Store original and target scales.
-        this.originalScale = new THREE.Vector3().copy(this.el.object3D.scale);
-        this.targetScale = new THREE.Vector3().copy(this.originalScale).multiplyScalar(this.data.factor);
-        
-        // --- Event Listeners ---
-        
-        // Using arrow functions to preserve 'this' context.
-        this.el.addEventListener('mouseenter', () => {
-          this.el.object3D.scale.copy(this.targetScale);
-        });
-        
-        this.el.addEventListener('mouseleave', () => {
-          this.el.object3D.scale.copy(this.originalScale);
-        });
-      }
-      });
     });
   </script>
 </body>
