@@ -71,15 +71,12 @@
 
 
       <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
-      <a-entity id="jukebox" 
-                position="-6 1.5 -3"
-                sound="autoplay: true; volume: 0.5; loop: false; positional: true; rolloffFactor: .5"
-                playlist="srcs: #song0, #song5, #song2, #song1, #song6, #song7, #song8; loop: true;">
-        <a-plane id="winamp" src="#winamp" position="0 0 -.10" rotation="0 90 0" scale="2 2.25 2"></a-plane>
-        <a-entity>
-          <a-entity id="playlist-controls" position="0 0 0" rotation="0 92.5894067353459 0" scale="1 1 1">
-              <a-plane class="clickable" playlist-control="action: toggle" position="0 0 0" src="#winampPlay" material="side: double" scale="1 0.73 1"></a-plane>
-              <a-plane class="clickable" playlist-control="action: next" position="1 0 0" src="#winampSkip" material="side: double" scale="1 0.73 1"></a-plane>
+      <a-entity id="jukebox" position="-6 1.5 3.11075" sound="autoplay: true; rolloffFactor: 0.5; src:#song0; volume: 0.5" playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8" rotation="0 38.00772829779829 0">
+        <a-plane id="winamp" src="#winamp" position="-0.07914 0 -0.1" rotation="0 90 0" scale="2 2.25 2"></a-plane>
+        <a-entity position="-0.05409 0 1.49561">
+          <a-entity id="playlist-controls" rotation="0 92.5894067353459 0">
+              <a-plane class="clickable" playlist-control="action: toggle" src="#winampPlay" material="side: double" scale="1 0.73 1"></a-plane>
+              <a-plane class="clickable" playlist-control="action: next" position="3.19734 0 0.09937" src="#winampSkip" material="side: double" scale="1 0.73 1"></a-plane>
           </a-entity>
         </a-entity>
       </a-entity>
