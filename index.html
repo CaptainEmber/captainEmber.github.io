@@ -52,14 +52,14 @@
     </a-assets>
 
     <!-- Camera and controls -->
-    <a-entity id="cameraRig" movement-controls="fly: true; speed: 0.2;" wasd-controls-enabled="true">
+    <a-entity id="cameraRig" movement-controls="fly: true; speed: 0.2;" wasd-controls-enabled="true" position="-4 0 2">
       <a-entity camera  position="0 1.6 0" look-controls >
         <a-entity raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
       </a-entity>
     </a-entity>
 
     <!-- Environment & Models -->
-    <a-entity id="scenewrapper" position="-2 0 0">
+    <a-entity id="scenewrapper" position="0 0 0">
       <a-entity id="floor" gltf-model="#env"></a-entity>
       <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -9"></a-entity>
       <a-entity id="mickeyD" gltf-model="#david"></a-entity>
