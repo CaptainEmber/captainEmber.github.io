@@ -25,6 +25,10 @@
       <a-asset-item id="longroom" src="mdl/theLongRoomV2.glb"></a-asset-item>
       <a-asset-item id="longroomlightshafts" src="mdl/theLongRoomV1lightshafts.glb"></a-asset-item>
       <img id="sky" src="img/clouds.jpg">
+      <img id="tutKeys" src="img/tutKeys.png">
+      <img id="tutMouse" src="img/tutMouse.png">
+      <img id="tutTap" src="img/tutTap.png">
+      <img id="tutLook" src="img/tutLook.png">
     </a-assets>
 
     <!-- Camera and controls -->
@@ -37,7 +41,10 @@
     <!-- Respectable in the Front -->
     <a-entity id="longroomwrapper" position="0 0 -20" rotation="0 90 0">
       <a-entity id="longroom" gltf-model="#longroom"></a-entity>
-      <a-entity id="longroomlightrays" gltf-model="#longroomlightshafts"></a-entity>
+      <a-entity id="longroomlightrays" gltf-model="#longroomlightshafts" material="flatShading: true; blending: additive" position="0 0 0"></a-entity>
+
+      <a-image src="#tutKeys" position="-1 1 21"></a-image>
+      <a-image src="#tutMouse" position="1 1 21"></a-image>
     </a-entity>
 
     <!--Links-->
