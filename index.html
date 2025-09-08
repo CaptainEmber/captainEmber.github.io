@@ -28,6 +28,8 @@
       <a-asset-item id="palm" src="mdl/palms_01.glb"></a-asset-item>
       <a-asset-item id="mac" src="mdl/macClassic_01.glb"></a-asset-item>
       <a-asset-item id="EB" src="mdl/EmmettBaberWordArt_02.glb"></a-asset-item>
+      <a-asset-item id="longroom" src="mdl/theLongRoomV2.glb"></a-asset-item>
+      <a-asset-item id="longroomlightshafts" src="mdl/theLongRoomV1lightshafts.glb"></a-asset-item>
       <img id="sky" src="img/clouds.jpg">
       <a-cubemap id="pan">
         <img src="img/panorama/px.jpg">
@@ -58,20 +60,26 @@
       </a-entity>
     </a-entity>
 
-    <!-- Environment & Models -->
-    <a-entity id="scenewrapper" position="0 0 0">
+    <!-- Respectable in the Front -->
+    <a-entity id="win95scenewrapper" position="0 0 0">
+      <a-entity id="longroom" gltf-model="#longroom"></a-entity>
+      <a-entity id="longroomlightrays" gltf-model="#longroomlightshafts"></a-entity>
+    </a-entity>
+
+    <!-- Win95 in the back -->
+    <a-entity id="win95scenewrapper" position="0 0 -20">
       <a-entity id="floor" gltf-model="#env"></a-entity>
       <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -9"></a-entity>
       <a-entity id="mickeyD" gltf-model="#david"></a-entity>
       <a-entity id="palm" gltf-model="#palm"></a-entity>
       <a-entity id="mac" gltf-model="#mac"></a-entity>
-      <a-entity id="EmmettBaber" gltf-model="#EB" position="-4 9 -15" scale="2 2 2" animation="property: rotation; from: 0 -12 0; to: 0 12 0; dir: alternate; loop: true; dur: 1000"></a-entity>
+      <a-entity id="EmmettBaber" gltf-model="#EB" position="-4 9 -15" scale="2 2 2" material="flatShading: true" animation="property: rotation; from: 0 -12 0; to: 0 12 0; dir: alternate; loop: true; dur: 1000"></a-entity>
       <a-sphere id="orb" position="-20 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
       <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield" playsinline></a-plane>
 
 
       <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
-      <a-entity id="jukebox" position="-6 1.5 3.11075" sound="autoplay: true; rolloffFactor: 0.5; src:#song0; volume: 0.5" playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8" rotation="0 38.00772829779829 0">
+      <a-entity id="jukebox" position="-6 1.5 -20" sound="autoplay: true; rolloffFactor: 0.5; src:#song0; volume: 0.5" playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8" rotation="0 -60 0">
         <a-plane id="winamp" src="#winamp" position="-0.07914 0 -0.1" rotation="0 90 0" scale="2 2.25 2"></a-plane>
         <a-entity position="-0.05409 0 1.49561">
           <a-entity id="playlist-controls" rotation="0 92.5894067353459 0">
