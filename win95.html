@@ -60,14 +60,8 @@
       </a-entity>
     </a-entity>
 
-    <!-- Respectable in the Front -->
-    <a-entity id="longroomwrapper" position="0 0 -20" rotation="0 90 0">
-      <a-entity id="longroom" gltf-model="#longroom"></a-entity>
-      <a-entity id="longroomlightrays" gltf-model="#longroomlightshafts"></a-entity>
-    </a-entity>
-
     <!-- Win95 in the back -->
-    <a-entity id="win95scenewrapper" position="0 0 -60">
+    <a-entity id="win95scenewrapper" position="0 0 0">
       <a-entity id="floor" gltf-model="#env"></a-entity>
       <a-entity id="dolphan" gltf-model="mdl/dolphin_05.glb" material="envMap: #pan; metalness: 1; roughness: 0" animation-mixer="clip: leap" position="15 1 -9"></a-entity>
       <a-entity id="mickeyD" gltf-model="#david"></a-entity>
@@ -77,6 +71,7 @@
       <a-sphere id="orb" position="-20 3 -9" material="envMap: #pan; metalness: 1; roughness: 0" scale="8 8 8"></a-sphere>
       <a-plane id="screensaver" position="20 5 -9" rotation="0 -90 0" geometry="height: 8; width: 10; segmentsHeight: 4; segmentsWidth: 5" material="shader: flat; src: #starfield" playsinline></a-plane>
 
+      <a-link id="viewerlink" class="clickable" href="viewer.html" position="-6 1 -12" rotation="0 90 0" title="AR Collab Gallery"></a-link>
 
       <!-- This entity is now a positional jukebox. Walk away and the sound will fade! -->
       <a-entity id="jukebox" position="-6 1.5 -20" sound="autoplay: true; rolloffFactor: 0.5; src:#song0; volume: 0.5" playlist="srcs: #song0, #song1, #song2, #song5, #song6, #song7, #song8" rotation="0 -60 0">
@@ -107,10 +102,7 @@
         <a-sphere id="right-pupil" radius="0.02" position="0.08 0.18 0.27" color="#222"></a-sphere>
         <a-entity id="mouth" geometry="primitive: torus; radius: 0.08; tube: 0.015; arc: 180" rotation="90 0 0" position="0 0.05 0.23" material="color: #f33"></a-entity>
       </a-entity>
-    </template>
-
-    <a-link id="viewerlink" class="clickable" href="viewer.html" position="-6 1 -12" rotation="0 90 0" title="AR Collab Gallery"></a-link>
-    
+    </template>    
   </a-scene>
 
   <script>
