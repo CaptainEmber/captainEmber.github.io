@@ -9,6 +9,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/randomcolor/randomColor.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+  <script src="node_modules/open-easyrtc/api/easyrtc.js"></script>
+  <script src="/dist/networked-aframe.js"></script>
   <link rel="stylesheet" href="style.css">
 
   <!-- Force HTTPS -->
@@ -41,17 +43,24 @@
     <!-- Respectable in the Front -->
     <a-entity id="longroomwrapper" position="0 0 -20" rotation="0 90 0">
       <a-entity id="longroom" gltf-model="#longroom"></a-entity>
+      <a-entity text__text="align: center; height: 10; letterSpacing: 10; lineHeight: 10; tabSize: 5.35; value: Emmett Baber's Hall of Links; width: 10" position="-0.20351 6.20442 17.70315"></a-entity>
       <!-- Commented for optimization? Transparent stuff is hard for mobile. <a-entity id="longroomlightrays" gltf-model="#longroomlightshafts" material="flatShading: true; blending: additive" position="0 0 0"></a-entity> -->
 
       <a-image src="#tutKeys" position="-37.6 3 -3" rotation="0 -90 0" scale="1.5 1 1"></a-image>
       <a-image src="#tutMouse" position="-37.6 3 3" rotation="0 -90 0" scale="1.5 1.5 1.5"></a-image>
-      <a-image src="#tutTap" position="-40 0.5 -1" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
-      <a-image src="#tutLook" position="-40 0.5 1" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
+      <a-image src="#tutTap" position="-40 0.5 -0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
+      <a-image src="#tutLook" position="-40 0.5 0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
     </a-entity>
 
     <!--Links-->
-    <a-link id="viewerlink" class="clickable" href="viewer.html" position="-6 1 -12" rotation="0 90 0" title="AR Collab Gallery"></a-link>
-    <a-link id="win95" class="clickable" href="win95.html" position="-6 1 -15" rotation="0 90 0" title="win95"></a-link>
+    <a-link id="viewerlink" class="clickable" href="viewer.html" position="-8 2 10" rotation="0 90 0" title="AR Collab Gallery"></a-link>
+    <a-link id="win95link" class="clickable" href="win95.html" position="-8 2 6" rotation="0 90 0" title="Vaporwave Lounge"></a-link>
+    <a-link id="archievis" class="clickable" href="https://ar.glimmer.tech/ConnleyCaves.html" position="-8 2 2" rotation="0 90 0" title="Connley Caves"></a-link>
+
+    <a-link id="artstationlink" class="clickable" href="https://www.artstation.com/TawpShelf" position="8 2 10" rotation="0 -90 0" title="artstation"></a-link>
+    <a-link id="carrdlink" class="clickable" href="https://emmett.carrd.co/" position="8 2 6" rotation="0 90 0" title="Carrd Links"></a-link>
+    <a-link id="ytlink" class="clickable" href="https://www.youtube.com/@TawpShelf" position="8 2 2" rotation="0 90 0" title="YouTube"></a-link>
+    <a-link id="iglink" class="clickable" href="https://www.instagram.com/tawpshelf/" position="8 2 -2" rotation="0 90 0" title="YouTube"></a-link>
 
     <!-- Sky & Lighting -->
     <a-sky src="#sky"></a-sky>
