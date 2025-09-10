@@ -11,6 +11,8 @@
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
   <script src="node_modules/open-easyrtc/api/easyrtc.js"></script>
   <script src="/dist/networked-aframe.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
   <link rel="stylesheet" href="style.css">
 
   <!-- Force HTTPS -->
@@ -21,7 +23,14 @@
   </script>
 </head>
 <body>
-  <a-scene reflection="directionalLight:a-light#dirlight;">
+  <a-scene 
+    reflection="directionalLight:a-light#dirlight;" 
+    networked-scene="
+      room: basic-audio;
+      debug: true;
+      adapter: easyrtc;
+      audio: true;
+    ">
     <!-- all the assets -->
     <a-assets>
       <a-asset-item id="longroom" src="mdl/theLongRoomV2.glb"></a-asset-item>
@@ -49,14 +58,17 @@
       <a-image src="#tutKeys" position="-37.6 3 -3" rotation="0 -90 0" scale="1.5 1 1"></a-image>
       <a-image src="#tutMouse" position="-37.6 3 3" rotation="0 -90 0" scale="1.5 1.5 1.5"></a-image>
       <a-image src="#tutTap" position="-40 0.5 -0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
-      <a-image src="#tutLook" position="-40 0.5 0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
+      <a-image src="#tutLook" position="-39.8 0.8 0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
     </a-entity>
 
     <!--Links-->
-    <a-link id="viewerlink" class="clickable" href="viewer.html" position="-8 2 10" rotation="0 90 0" title="AR Collab Gallery"></a-link>
-    <a-link id="win95link" class="clickable" href="win95.html" position="-8 2 6" rotation="0 90 0" title="Vaporwave Lounge"></a-link>
-    <a-link id="archievis" class="clickable" href="https://ar.glimmer.tech/ConnleyCaves.html" position="-8 2 2" rotation="0 90 0" title="Connley Caves"></a-link>
+    <a-entity id="linkwrapperL" position="0 0 0">
+      <a-link id="viewerlink" class="clickable" href="viewer.html" position="-8 2 10" rotation="0 90 0" title="AR Collab Gallery"></a-link>
+      <a-link id="win95link" class="clickable" href="win95.html" position="-8 2 6" rotation="0 90 0" title="Vaporwave Lounge"></a-link>
+      <a-link id="archievis" class="clickable" href="https://ar.glimmer.tech/ConnleyCaves.html" position="-8 2 2" rotation="0 90 0" title="Connley Caves"></a-link>
+    </a-entity>
 
+    <a-entity id="linkwrapperR" position="0 0 0"></a-entity>
     <a-link id="artstationlink" class="clickable" href="https://www.artstation.com/TawpShelf" position="8 2 10" rotation="0 -90 0" title="artstation"></a-link>
     <a-link id="carrdlink" class="clickable" href="https://emmett.carrd.co/" position="8 2 6" rotation="0 90 0" title="Carrd Links"></a-link>
     <a-link id="ytlink" class="clickable" href="https://www.youtube.com/@TawpShelf" position="8 2 2" rotation="0 90 0" title="YouTube"></a-link>
