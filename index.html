@@ -9,10 +9,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/randomcolor/randomColor.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
-  <script src="node_modules/open-easyrtc/api/easyrtc.js"></script>
-  <script src="/dist/networked-aframe.js"></script>
+  <script src="/node_modules/open-easyrtc/api/easyrtc.js"></script>
+  <script src="/node_modules/networked-aframe/dist/networked-aframe.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
   <link rel="stylesheet" href="style.css">
 
   <!-- Force HTTPS -->
@@ -59,7 +58,11 @@
       <a-image src="#tutMouse" position="-37.6 3 3" rotation="0 -90 0" scale="1.5 1.5 1.5"></a-image>
       <a-image src="#tutTap" position="-40 0.5 -0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
       <a-image src="#tutLook" position="-39.8 0.8 0.75" rotation="-40 -90 0" scale="1 1.5 1"></a-image>
-    </a-entity>
+
+      <!-- Always read the plaque. -->
+       <a-entity position="0 6 17.5" text__foo="align: center; height: 2; value: Emmett is a digital creative constantly trying to make something weird and wonderful. ; width: 2; wrapCount: 0;" geometry="primitive: plane; height: 0.3; width: 1.1" material="color: #ffb514"></a-entity>
+    
+      </a-entity>
 
     <!--Links-->
     <a-entity id="linkwrapperL" position="0 0 0">
